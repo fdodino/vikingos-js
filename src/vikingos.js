@@ -23,25 +23,26 @@ export class Vikingo {
   // para qué un constructor con los parámetros
   // 1. me aseguro que construir un objeto sea una operación atómica (no queda en
   // estado inconsistente)
-  // 2. quiero que el vikingo sea inmutable
+  // 2. Tomo sólo las propiedades que me interesan, de otra manera ¡podrían 
+  // sobreescribirme los slots correspondientes a métodos!
   constructor(props) {
     this.nivelDeHambre = 0
     return Object.assign(this, props)
   }
 
   puedeParticiparDeUnaPosta(posta) {
-    return posta.puedeParticipar(this)
+    return posta.puedeParticipar(this) && this.habilitadoParaParticiparDeUnaPosta(posta)
   }
 
-  participaDeUnaPosta(posta) {
-    return this.puedeParticiparDeUnaPosta(posta);
+  habilitadoParaParticiparDeUnaPosta(posta) {
+    return true
   }
 }
 
 export const NIVEL_HAMBRE_LIMITE_PATAPEZ = 50
 
 export class Patapez extends Vikingo {
-  puedeParticiparDeUnaPosta(posta) {
-    return this.nivelDeHambre <= NIVEL_HAMBRE_LIMITE_PATAPEZ && super.puedeParticiparDeUnaPosta(posta)
+  habilitadoParaParticiparDeUnaPosta(posta) {
+    return this.nivelDeHambre <= NIVEL_HAMBRE_LIMITE_PATAPEZ
   }
 }

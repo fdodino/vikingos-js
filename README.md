@@ -266,28 +266,32 @@ class Vikingo {
   // para qué un constructor con los parámetros
   // 1. me aseguro que construir un objeto sea una operación atómica (no queda en
   // estado inconsistente)
-  // 2. Tomo sólo las propiedades que me interesan, de otra manera podrian sobreescribirme los slots correspondientes a métodos!
+  // 2. Tomo sólo las propiedades que me interesan, de otra manera ¡podrían sobreescribirme los slots correspondientes a métodos!
   constructor({ peso, velocidad, barbarosidad }) {
     this.nivelDeHambre = 0
     Object.assign(this, { peso, velocidad, barbarosidad })
   }
 
   puedeParticiparDeUnaPosta(posta) {
-    return posta.puedeParticipar(this)
+    return posta.puedeParticipar(this) && this.habilitadoParaParticiparDeUnaPosta(posta)
   }
 
-  participaDeUnaPosta(posta) {
-    return this.puedeParticiparDeUnaPosta(posta)
+  habilitadoParaParticiparDeUnaPosta(posta) {
+    return true
   }
 }
 ```
 
-Una clase tiene
+Tenemos aquí un **template method** puedeParticiparDeUnaPosta que delega la pregunta:
 
-- un constructor (y solo uno)
-- métodos (`this` tal cual lo conocemos de Java)
+- a la posta
+- y al propio vikingo
 
-En esta implementación, nosotros le pasamos un objeto, y lo que estamos haciendo es generar una copia de Vikingo con las propiedades que le pasamos en el constructor:
+Cada uno de ellos colabora para determinar si es válida la inscripción a la posta.
+
+La clase define un constructor, los atributos para cada instancia que crea y métodos, donde `this` es tal cual lo conocemos de Java.
+
+En esta implementación, nosotros le pasamos un objeto, y lo que estamos haciendo es generar un Vikingo con las propiedades (válidas para nosotros) que le pasamos en el constructor:
 
 Paso 0) todo objeto Vikingo tiene hardcodeado this.nivelDeHambre => 0
 Paso 1) a esta instancia le asignamos los parámetros recibidos que nos interesan
@@ -300,7 +304,7 @@ export const astrid = new Vikingo({ peso: 130, velocidad: 10, barbarosidad: 7 })
 export const patan = new Vikingo({ peso: 100, velocidad: 15, barbarosidad: 13 })
 ```
 
-Por otra parte, Patapez va a ser subclase de Vikingo, para redefinir el hook method que calcula la posibilidad de que participe de una posta:
+Por otra parte, Patapez va a ser subclase de Vikingo, para redefinir el **hook method** que calcula la posibilidad de que participe de una posta:
 
 ```js
     test('patapez con hambre justa puede participar de una posta', () => {
