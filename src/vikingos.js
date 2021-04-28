@@ -9,6 +9,8 @@ export const hipo = {
   participaDeUnaPosta: () => true // definimos una función dentro del objeto, se parece a un método
 }
 
+class Arma {}
+
 // otra variante, construyo una clase
 class Vikingo {
 
