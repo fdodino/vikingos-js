@@ -21,5 +21,4 @@ describe('Vikingos Test', () => {
         console.log('Patapez tiene nivel de hambre ' + patapez.nivelDeHambre)
         expect(patapez.pasarHambre(1).participaDeUnaPosta()).toBe(false)
     })
-    test('fake test', () => { expect(1).toBe(1) })
 })
